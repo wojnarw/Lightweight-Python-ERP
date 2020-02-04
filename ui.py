@@ -102,3 +102,23 @@ def print_error_message(message):
     """
 
     # your code
+
+def show_table(filename):
+
+    with open(filename, "r") as f:
+        lines = f.readlines()
+
+    for i in lines:
+        record = i.rstrip().split(';')
+        game_id.append(record[0])
+        game.append(record[1])
+        studio.append(record[2])
+        price.append(record[3])
+        in_stock.append(record[4])
+
+    print('GAME ID' + " "*3 + '|GAME' + " "*(43-len(max(game))) + "|STUDIO" + " "*(51-len(max(studio))) + "|PRICE" + " "*len(max(price)) + "   |IN STOCK")
+
+    a = 0
+    while a < len(game):
+        print(game_id[a] + " "*(10-len(game_id[a])) + "|" + game[a] + " "*(40-len(game[a])) + "|" + studio[a] + " "*(40-len(studio[a])) + "|" + price[a] + " "*(10-len(price[a])) + "|" + in_stock[a])
+        a += 1
