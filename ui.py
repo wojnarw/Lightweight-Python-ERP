@@ -30,7 +30,7 @@ def print_result(result, label):
     Displays results of the special functions.
 
     Args:
-        result: result of the special function (string, number, list or dict)
+        result: result of the special function (string, list or dict)
         label (str): label of the result
 
     Returns:
@@ -61,7 +61,12 @@ def print_menu(title, list_options, exit_message):
         None: This function doesn't return anything it only prints to console.
     """
 
-    # your code
+    print(title)
+    for e in list_options:
+        print("\t" + e)
+    print("\t" + exit_message)
+
+    
 
 
 def get_inputs(list_labels, title):
@@ -85,9 +90,13 @@ def get_inputs(list_labels, title):
     """
     inputs = []
 
-    # your code
-
+    print(title)
+    for label in list_labels:
+        user_input = input(label)
+        inputs.append(user_input)
     return inputs
+
+    print(options)
 
 
 def print_error_message(message):
@@ -103,22 +112,7 @@ def print_error_message(message):
 
     # your code
 
-def show_table(filename):
 
-    with open(filename, "r") as f:
-        lines = f.readlines()
+def print_hr_options():
+    print("Avaible operations:\n 1.Show table\n 2.Add table\n 3.Remove table\n 4.Update table\n 5.Exit")
 
-    for i in lines:
-        record = i.rstrip().split(';')
-        game_id.append(record[0])
-        game.append(record[1])
-        studio.append(record[2])
-        price.append(record[3])
-        in_stock.append(record[4])
-
-    print('GAME ID' + " "*3 + '|GAME' + " "*(43-len(max(game))) + "|STUDIO" + " "*(51-len(max(studio))) + "|PRICE" + " "*len(max(price)) + "   |IN STOCK")
-
-    a = 0
-    while a < len(game):
-        print(game_id[a] + " "*(10-len(game_id[a])) + "|" + game[a] + " "*(40-len(game[a])) + "|" + studio[a] + " "*(40-len(studio[a])) + "|" + price[a] + " "*(10-len(price[a])) + "|" + in_stock[a])
-        a += 1
