@@ -21,8 +21,43 @@ def print_table(table, title_list):
     Returns:
         None: This function doesn't return anything it only prints to console.
     """
+    
+    max_length = [] #max length of item for each column
+    #count max length of all the elements, so we can print all details in neat columns
+    for row in table:
+        column = 0
 
-    # your goes code
+        for item in row:
+            try:
+                if len(item) > max_length[column]:
+                    max_length[column] = len(item)
+                column += 1
+            except IndexError:
+                max_length.append(0)
+                if len(item) > max_length[column]:
+                    max_length[column] = len(item)
+                column += 1
+
+    print("\n\t", end = " ")
+    #print titles, while keeping columns straight
+    for i in range(len(title_list)):
+        print(title_list[i] + fill(title_list[i], max_length[i]+5), end = " ")
+
+    
+    #print all game details, while keeping columns straight
+    for row in range(len(table)):
+        print("\n\t", end = " ")
+        for item in range(len(table[row])):
+            print(table[row][item] + fill(table[row][item], max_length[item]+5), end = " ")
+        
+    print("\n\n\t", end = " ")
+
+#check how many spaces we need to make columns straight
+def fill (check_for_length, total_length, filler=" "):
+    space = ""
+    for i in range(len(check_for_length), total_length):
+        space += filler
+    return space
 
 
 def print_result(result, label):
