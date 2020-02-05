@@ -19,8 +19,10 @@ import data_manager
 import common
 
 sales_list = []
+repeat = True
 
 def start_module():
+    global repeat
     """
     Starts this module and displays its menu.
      * User can access default special features from here.
@@ -29,9 +31,53 @@ def start_module():
     Returns:
         None
     """
-    
+    #read from file to 2D table
     sales_list = common.read_from_file_to_table("sales/sales.csv")
-    show_table(sales_list)
+
+    
+    while repeat:
+        #display Sales menu
+        options = ["Display list",
+                "Add entry",
+                "Remove entry",
+                "Update entry",
+                "Get lowest price item",
+                "Get items sold between time range"]
+
+        ui.print_menu("Sales menu", options, "Return to main menu")
+        try:
+            choose(sales_list)
+        except KeyError as err:
+            ui.print_error_message(str(err))
+
+    
+
+def choose(sales_list):
+
+    global repeat
+    
+    inputs = ui.get_inputs(["Please enter a number: "], "")
+    option = inputs[0]
+    if option == "1":
+        show_table(sales_list)
+    elif option == "2":
+        ui.get_inputs(["Title","Price","Month", "Day", "Year"],"Please insert new game information")
+        add(table)
+    elif option == "3":
+        ui.get_inputs(["Index"],"Please choose index")
+        remove(table, id_)
+    elif option == "4":
+        ui.get_inputs(["Index"],"Please choose index")
+        ui.get_inputs(["Title","Price","Month", "Day", "Year"],"Please insert new game information")
+        update(table, id_)
+    elif option == "5":
+        get_lowest_price_item_id(table)
+    elif option == "6":
+        get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to)
+    elif option == "0":
+        repeat = False
+    else:
+        raise KeyError("There is no such option.")
 
 
 def show_table(sales_list):
@@ -59,8 +105,6 @@ def add(table):
     Returns:
         list: Table with a new record
     """
-
-    ui.get_inputs(["Title","Price","Month", "Day", "Year"],"Please insert new game information")
 
     return table
 

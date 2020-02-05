@@ -132,8 +132,6 @@ def get_inputs(list_labels, title):
         inputs.append(user_input)
     return inputs
 
-    print(options)
-
 
 def print_error_message(message):
     """
