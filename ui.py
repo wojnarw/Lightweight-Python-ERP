@@ -22,8 +22,16 @@ def print_table(table_2D, title_list):
         None: This function doesn't return anything it only prints to console.
     """
     
-    max_length = [] #max length of item for each column
-    #count max length of all the elements, so we can print all details in neat columns
+    max_length = [] # max length of item for each column
+    separator_sign = "  |  " # it separates columns
+    side_sign = "|" # on the sides of table
+    sourrounding_sign = "-" # top and bottom of table
+    
+    # BELOW VAR NEEDS TO BE FIXED, GOT RID OFF
+    # without this correction table horizontal lines displays unevenly
+    length_correction = 2 
+
+    # count max length of all elements in a table, so we can print all details in neat columns
     for row in table_2D:
         column = 0
 
@@ -32,27 +40,39 @@ def print_table(table_2D, title_list):
                 if len(item) > max_length[column]:
                     max_length[column] = len(item)
                 column += 1
+            # expand table if needed
             except IndexError:
                 max_length.append(0)
                 if len(item) > max_length[column]:
                     max_length[column] = len(item)
                 column += 1
 
-    print("\n\t", end = " ")
-    #print titles, while keeping columns straight
+    # print titles, while keeping columns straight
+    titles = side_sign + " "
     for i in range(len(title_list)):
-        print(title_list[i] + fill(title_list[i], max_length[i]+5), end = " ")
+        # count length of all titles, to check if they are longer than entries
+        if len(title_list[i]) > max_length[i]:
+            max_length[i] = len(title_list[i])
 
-    
-    #print all game details, while keeping columns straight
+        titles += title_list[i] + fill(title_list[i], max_length[i]) + separator_sign
+
+    print("\n\t/" + fill("", len(titles.strip())-length_correction, sourrounding_sign) + "\\") # print top line
+    print("\t" + titles)
+    print("\t" + side_sign + fill("", len(titles.strip())-length_correction, sourrounding_sign) + side_sign) # print line below titles
+
+    table_content = ""
+    # print all game details, while keeping columns straight
     for row in range(len(table_2D)):
-        print("\n\t", end = " ")
+        table_content += "\t" + side_sign + " "
         for item in range(len(table_2D[row])):
-            print(table_2D[row][item] + fill(table_2D[row][item], max_length[item]+5), end = " ")
-        
-    print()
+            table_content += table_2D[row][item] + fill(table_2D[row][item], max_length[item]) + separator_sign
+        table_content += "\n"
 
-#check how many spaces we need to make columns straight
+    print(table_content, end="")
+    print("\t\\" + fill("", len(titles.strip())-length_correction, sourrounding_sign) + "/")
+
+
+# check how many spaces we need to make columns straight
 def fill (check_for_length, total_length, filler=" "):
     space = ""
     for i in range(len(check_for_length), total_length):
