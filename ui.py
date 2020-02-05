@@ -50,7 +50,7 @@ def print_table(table_2D, title_list):
         for item in range(len(table_2D[row])):
             print(table_2D[row][item] + fill(table_2D[row][item], max_length[item]+5), end = " ")
         
-    print("\n\n\t", end = " ")
+    print()
 
 #check how many spaces we need to make columns straight
 def fill (check_for_length, total_length, filler=" "):
@@ -65,7 +65,7 @@ def print_result(result, label):
     Displays results of the special functions.
 
     Args:
-        result: result of the special function (string, list or dict)
+        result: result of the special function (string, number, list or dict)
         label (str): label of the result
 
     Returns:
@@ -96,10 +96,11 @@ def print_menu(title, list_options, exit_message):
         None: This function doesn't return anything it only prints to console.
     """
 
-    print(title)
-    for e in list_options:
-        print("\t" + e)
-    print("\t" + exit_message)
+    #display main menu with numbers
+    print("\n\t" + title.upper())
+    for e in range(len(list_options)):
+        print(f"\t{e+1}. {list_options[e]}")
+    print(f"\t0. {exit_message}")
 
     
 
@@ -125,9 +126,9 @@ def get_inputs(list_labels, title):
     """
     inputs = []
 
-    print(title)
+    print(f"\t{title}")
     for label in list_labels:
-        user_input = input(label)
+        user_input = input(f"\t{label}")
         inputs.append(user_input)
     return inputs
 

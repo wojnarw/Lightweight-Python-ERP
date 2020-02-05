@@ -43,17 +43,7 @@ def show_table(sales_list):
 
     Returns:
         None
-
-    * id (string): Unique and random generated identifier
-        at least 2 special characters (except: ';'), 2 number, 2 lower and 2 upper case letters)
-    * title (string): Title of the game sold
-    * price (number): The actual sale price in USD
-    * month (number): Month of the sale
-    * day (number): Day of the sale
-    * year (number): Year of the sale
     """
-
-    
 
     title_list = ["ID", "TITLE", "PRICE", "MONTH", "DAY", "YEAR"]
     ui.print_table(sales_list, title_list)
@@ -70,7 +60,7 @@ def add(table):
         list: Table with a new record
     """
 
-    # your code
+    ui.get_inputs(["Title","Price","Month", "Day", "Year"],"Please insert new game information")
 
     return table
 
