@@ -23,7 +23,7 @@ repeat = True
 
 def start_module():
     global repeat
-    global sales_list
+
     """
     Starts this module and displays its menu.
      * User can access default special features from here.
@@ -63,12 +63,12 @@ def choose(sales_list):
         show_table(sales_list)
     elif option == "2":
         table = ui.get_inputs(["Title: ","Price: ","Month: ", "Day: ", "Year: "],"Please insert new game information")
-        add(table)
+        sales_list = add(table, sales_list)
     elif option == "3":
-        ui.get_inputs(["Please choose index: "],"")
-        remove(table, id_)
+        id_remove = ui.get_inputs(["Please choose index: "],"")[0]
+        sales_list = remove(sales_list, int(id_remove))
     elif option == "4":
-        ui.get_inputs(["Please choose index: "],"")
+        ui.get_inputs(["Please choose index: "],"")[0]
         ui.get_inputs(["Title: ","Price: ","Month: ", "Day: ", "Year: "],"Please insert new game information")
         update(table, id_)
     elif option == "5":
@@ -96,8 +96,7 @@ def show_table(sales_list):
     ui.print_table(sales_list, title_list)
 
 
-def add(table):
-    global sales_list
+def add(table, sales_list):
     """
     Asks user for input and adds it into the table.
 
@@ -124,8 +123,7 @@ def remove(table, id_):
         list: Table without specified record.
     """
 
-    # your code
-
+    table.pop(id_)
     return table
 
 
