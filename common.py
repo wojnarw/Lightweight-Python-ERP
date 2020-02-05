@@ -23,30 +23,18 @@ def generate_random(stringLength=8):
 
     print(generate_random(stringLength=8) + ";")
 
-<<<<<<< Updated upstream
 def read_from_file_to_table(path_and_filename):
-=======
-def read_from_file_to_table(filename):
->>>>>>> Stashed changes
 
     table = []
 
     try:
-<<<<<<< Updated upstream
         with open(path_and_filename, "r") as file:
-=======
-        with open(filename, "r") as file:
->>>>>>> Stashed changes
             for line in file:
                 line = line.strip()
                 new_item = line.split(';')
                 table.append(new_item)
 
     except FileNotFoundError:
-<<<<<<< Updated upstream
         input(f"\n\tFile '{path_and_filename}' not found!")
-=======
-        input(f"\n\tFile '{filename}' not found!")
->>>>>>> Stashed changes
 
     return table

@@ -9,7 +9,7 @@ Data table structure:
 
 # everything you'll need is imported:
 # User interface module
-import ui
+from ui import print_hr_options
 # data manager module
 import data_manager
 # common module
@@ -25,11 +25,28 @@ def start_module():
     Returns:
         None
     """
-
     # your code
+    file = open("hr/persons.csv", "r")
+    persons = file.readlines()
+
+    print_hr_options()
+    persons = []
+    print(persons)
+    while True:
+        option = input("Please enter a number")
+        if option == "1":
+            show_table(persons)
+        elif option == "2":
+            add()
+        elif option == "3":
+            remove()
+        elif option == "4":
+            update()
+        elif option == "5":
+            break
 
 
-def show_table(table):
+def show_table(persons):
     """
     Display a table
 
@@ -41,9 +58,16 @@ def show_table(table):
     """
 
     # your code
+    file = open("hr/persons.csv", "r")
+    persons_list = []
+    persons_list = file.readlines()
+    for person in persons_list:
+        print(person[9:])
+    input("Press any key")
+    start_module()
 
 
-def add(table):
+def add():
     """
     Asks user for input and adds it into the table.
 
@@ -55,11 +79,16 @@ def add(table):
     """
 
     # your code
+    with open('hr/persons.csv', 'a') as file:
+        person_add = input(str("Type name, surname and year"))
+        file.write("\n" + person_add)
+        file.close()
+        input("Press any key")
+        return file
+        start_module()
 
-    return table
 
-
-def remove(table, id_):
+def remove():
     """
     Remove a record with a given id from the table.
 
@@ -72,11 +101,20 @@ def remove(table, id_):
     """
 
     # your code
+    id_ = input("Which one you want to remove?")
+    with open("hr/persons.csv", "r") as f:
+        lines = f.readlines()
+    with open("hr/persons.csv", "w") as f:
+        for line in lines:
+            if line.strip("\n") != id_:         #Need to implement whole data~~~Fix it later
+                f.write(line)
+    f.close()
+    input("Press any key")
+    start_module()
+    return f
 
-    return table
 
-
-def update(table, id_):
+def update():
     """
     Updates specified record in the table. Ask users for new data.
 
@@ -89,8 +127,14 @@ def update(table, id_):
     """
 
     # your code
-
-    return table
+    file = open("hr/persons.csv", "r")
+    persons_list = file.readlines()
+    person = []
+    for i in persons_list:
+        list_only_for_split = i.split(",")
+        person.append(list_only_for_split)
+        print(person)
+    return persons_list
 
 
 # special functions:

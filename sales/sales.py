@@ -30,12 +30,8 @@ def start_module():
         None
     """
     
-<<<<<<< Updated upstream
     sales_list = common.read_from_file_to_table("sales/sales.csv")
     show_table(sales_list)
-=======
-    # your code
->>>>>>> Stashed changes
 
 
 def show_table(sales_list):
@@ -57,17 +53,10 @@ def show_table(sales_list):
     * year (number): Year of the sale
     """
 
-<<<<<<< Updated upstream
     
 
     title_list = ["ID", "TITLE", "PRICE", "MONTH", "DAY", "YEAR"]
     ui.print_table(sales_list, title_list)
-=======
-    sales_list = read_from_file_to_table("sales.csv")
-
-    title_list = ["ID", "TITLE", "PRICE", "MONTH", "DAY", "YEAR"]
-    print_table(sales_list, title_list)
->>>>>>> Stashed changes
 
 
 def add(table):
