@@ -3,7 +3,6 @@ implement commonly used functions here
 """
 
 import random
-import string
 
 
 def generate_random(stringLength=8):
@@ -18,10 +17,24 @@ def generate_random(stringLength=8):
     Returns:
         string: Random and unique string
     """
-    game_id = string.ascii_letters + string.digits + string.punctuation
-    return ''.join(random.choice(game_id) for i in range(stringLength))
 
-    print(generate_random(stringLength=8) + ";")
+    lowercase = "abcdefghijklmnopqrstuvwxyz"
+    uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    signs = ",./'\\[]{}!@#$%^&*()"
+    random_id = ""
+
+    #generate random id according to specifications
+    random_id += lowercase[random.randint(0, len(lowercase)-1)]
+    random_id += lowercase[random.randint(0, len(lowercase)-1)]
+    random_id += str(random.randrange(10))
+    random_id += str(random.randrange(10))
+    random_id += uppercase[random.randint(0, len(uppercase)-1)]
+    random_id += uppercase[random.randint(0, len(uppercase)-1)]
+    random_id += signs[random.randint(0, len(signs)-1)]
+    random_id += signs[random.randint(0, len(signs)-1)]
+    
+    return random_id
+
 
 def read_from_file_to_table(path_and_filename):
 

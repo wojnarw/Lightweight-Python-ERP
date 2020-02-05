@@ -23,6 +23,7 @@ repeat = True
 
 def start_module():
     global repeat
+    global sales_list
     """
     Starts this module and displays its menu.
      * User can access default special features from here.
@@ -55,20 +56,20 @@ def start_module():
 def choose(sales_list):
 
     global repeat
-    
+
     inputs = ui.get_inputs(["Please enter a number: "], "")
     option = inputs[0]
     if option == "1":
         show_table(sales_list)
     elif option == "2":
-        ui.get_inputs(["Title","Price","Month", "Day", "Year"],"Please insert new game information")
+        table = ui.get_inputs(["Title: ","Price: ","Month: ", "Day: ", "Year: "],"Please insert new game information")
         add(table)
     elif option == "3":
-        ui.get_inputs(["Index"],"Please choose index")
+        ui.get_inputs(["Please choose index: "],"")
         remove(table, id_)
     elif option == "4":
-        ui.get_inputs(["Index"],"Please choose index")
-        ui.get_inputs(["Title","Price","Month", "Day", "Year"],"Please insert new game information")
+        ui.get_inputs(["Please choose index: "],"")
+        ui.get_inputs(["Title: ","Price: ","Month: ", "Day: ", "Year: "],"Please insert new game information")
         update(table, id_)
     elif option == "5":
         get_lowest_price_item_id(table)
@@ -96,6 +97,7 @@ def show_table(sales_list):
 
 
 def add(table):
+    global sales_list
     """
     Asks user for input and adds it into the table.
 
@@ -105,8 +107,9 @@ def add(table):
     Returns:
         list: Table with a new record
     """
-
-    return table
+    table.insert(0, common.generate_random())
+    sales_list.append(table)
+    return sales_list
 
 
 def remove(table, id_):
