@@ -59,22 +59,21 @@ def choose(sales_list):
 
     inputs = ui.get_inputs(["Please enter a number: "], "")
     option = inputs[0]
-    if option == "1":
+    if option == "1": # show list
         show_table(sales_list)
-    elif option == "2":
+    elif option == "2": # add entry
         table = ui.get_inputs(["Title: ","Price: ","Month: ", "Day: ", "Year: "],"Please insert new game information")
         sales_list = add(table, sales_list)
-    elif option == "3":
-        id_remove = ui.get_inputs(["Please choose index: "],"")[0]
-        sales_list = remove(sales_list, int(id_remove))
-    elif option == "4":
-        ui.get_inputs(["Please choose index: "],"")[0]
-        ui.get_inputs(["Title: ","Price: ","Month: ", "Day: ", "Year: "],"Please insert new game information")
-        update(table, id_)
-    elif option == "5":
-        get_lowest_price_item_id(table)
+    elif option == "3": # remove entry
+        id_ = ui.get_inputs(["Please choose index: "],"")[0]
+        sales_list = remove(sales_list, int(id_))
+    elif option == "4": # update entry
+        id_ = ui.get_inputs(["Please choose index: "],"")[0]
+        sales_list = update(sales_list, int(id_))
+    elif option == "5": # show lowest price item
+        get_lowest_price_item_id(sales_list)
     elif option == "6":
-        get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to)
+        get_items_sold_between(sales_list, month_from, day_from, year_from, month_to, day_to, year_to)
     elif option == "0":
         repeat = False
     else:
@@ -123,7 +122,7 @@ def remove(table, id_):
         list: Table without specified record.
     """
 
-    table.pop(id_)
+    table.pop(id_ - 1) # correct index, so if user entered 1, we remove item with first index [0]
     return table
 
 
@@ -139,8 +138,16 @@ def update(table, id_):
         list: table with updated record
     """
 
-    # your code
+    id_ -= 1 # correct index, so if user entered 1, we remove item with first index [0]
+    title_id, price_id, month_id, day_id, year_id = 1,2,3,4,5
 
+    inputs = ui.get_inputs([f"Title (current: {table[id_][title_id]}): ", f"Price (current: {table[id_][price_id]}): ",
+                            f"Month (current: {table[id_][month_id]}): ", f"Day (current: {table[id_][day_id]}): ", 
+                            f"Year (current: {table[id_][year_id]}): "],
+                            "Please insert new game information")
+
+    for i in range(len(table[id_])-1): # iterate through the list 1 time less than its length, to ignore unchangeable id
+        table[id_][i+1] = inputs[i]  # skip first table item, which contains entry unchangeable id
     return table
 
 
