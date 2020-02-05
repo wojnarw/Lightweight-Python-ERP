@@ -26,7 +26,7 @@ def generate_random(stringLength=8):
 def read_from_file_to_table(path_and_filename):
 
     table = []
-
+    # creates 2D list from CSV file
     try:
         with open(path_and_filename, "r") as file:
             for line in file:

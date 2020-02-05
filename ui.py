@@ -1,7 +1,7 @@
 """ User Interface (UI) module """
 
 
-def print_table(table, title_list):
+def print_table(table_2D, title_list):
     """
     Prints table with data.
 
@@ -24,7 +24,7 @@ def print_table(table, title_list):
     
     max_length = [] #max length of item for each column
     #count max length of all the elements, so we can print all details in neat columns
-    for row in table:
+    for row in table_2D:
         column = 0
 
         for item in row:
@@ -45,10 +45,10 @@ def print_table(table, title_list):
 
     
     #print all game details, while keeping columns straight
-    for row in range(len(table)):
+    for row in range(len(table_2D)):
         print("\n\t", end = " ")
-        for item in range(len(table[row])):
-            print(table[row][item] + fill(table[row][item], max_length[item]+5), end = " ")
+        for item in range(len(table_2D[row])):
+            print(table_2D[row][item] + fill(table_2D[row][item], max_length[item]+5), end = " ")
         
     print("\n\n\t", end = " ")
 
