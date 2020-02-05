@@ -26,7 +26,7 @@ def print_table(table_2D, title_list):
     separator_sign = "  |  " # it separates columns
     side_sign = "|" # on the sides of table
     sourrounding_sign = "-" # top and bottom of table
-    
+
     # BELOW VAR NEEDS TO BE FIXED, GOT RID OFF
     # without this correction table horizontal lines displays unevenly
     length_correction = 2 
@@ -47,8 +47,10 @@ def print_table(table_2D, title_list):
                     max_length[column] = len(item)
                 column += 1
 
+    title_index = "No"
+
     # print titles, while keeping columns straight
-    titles = side_sign + " "
+    titles = side_sign + " " + title_index + separator_sign
     for i in range(len(title_list)):
         # count length of all titles, to check if they are longer than entries
         if len(title_list[i]) > max_length[i]:
@@ -63,7 +65,7 @@ def print_table(table_2D, title_list):
     table_content = ""
     # print all game details, while keeping columns straight
     for row in range(len(table_2D)):
-        table_content += "\t" + side_sign + " "
+        table_content += "\t" + side_sign + " " + str(row+1) + fill(str(row+1), max(len(str(row+1)), len(title_index))) + separator_sign
         for item in range(len(table_2D[row])):
             table_content += table_2D[row][item] + fill(table_2D[row][item], max_length[item]) + separator_sign
         table_content += "\n"
