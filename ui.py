@@ -194,5 +194,8 @@ def print_error_message(message):
 
 
 def print_hr_options():
-    print("Avaible operations:\n 1.Show table\n 2.Add table\n 3.Remove table\n 4.Update table\n 5.Exit")
+    print("Avaible operations:\n\t 1.Show table\n\t 2.Add table\n\t 3.Remove table\n\t 4.Update table\n\t 5.Get the oldest person\n\t 0.Exit")
 
+
+def continue_to_start():
+    input("press enter")
