@@ -16,6 +16,7 @@ import ui
 import data_manager
 # common module
 import common
+item_index = 1
 
 
 def start_module():
@@ -29,9 +30,27 @@ def start_module():
     """
 
     # your code
+    items_list = common.read_from_file_to_table("inventory/inventory.csv")
+    ui.print_hr_options()
+    while True:
+        inputs = ui.get_inputs(["Please enter a number: "], "")
+        option = inputs[0]
+        if option == "1":
+            show_table(items_list)
+        elif option == "2":
+            table = ui.get_inputs
+            add()
+        elif option == "3":
+            remove()
+        elif option == "4":
+            id_ = ui.get_inputs(["Please choose index: "],"")[0]
+            items_list = update(items_list, int(id_))
+            update()
+        elif option == "0":
+            break
 
 
-def show_table(table):
+def show_table(items_list):
     """
     Display a table
 
@@ -43,9 +62,13 @@ def show_table(table):
     """
 
     # your code
+    title_list = ["Id", "Consol Name", "Distributor", "Year", "Num of copies sold"]
+    ui.print_table(items_list, title_list)
+    ui.continue_to_start()
+    start_module()
 
 
-def add(table):
+def add():
     """
     Asks user for input and adds it into the table.
 
@@ -57,11 +80,18 @@ def add(table):
     """
 
     # your code
+    console_add = input(str("Enter console name"))
+    year = input(str("Enter year of distribution"))
+    num_of_sold = input(str("Enter number of sold copies (mln)"))
+    with open("inventory/inventory.csv", "a") as file:
+        file.write("\n" + common.generate_random() + ";" + console_add + ";" + year + ";" + num_of_sold)
+        file.close()
+        return file
+        ui.continue_to_start
+        start_module()
 
-    return table
 
-
-def remove(table, id_):
+def remove():
     """
     Remove a record with a given id from the table.
 
@@ -74,9 +104,17 @@ def remove(table, id_):
     """
 
     # your code
-
-    return table
-
+    id_ = input("Which one you want to remove?")
+    with open("inventory/inventory.csv", "r") as f:
+        lines = f.readlines()
+    with open("inventory/inventory.csv", "w") as f:
+        for line in lines:
+            if line.strip("\n") != id_:
+                f.write(line)
+    f.close()
+    ui.continue_to_start()
+    start_module()
+    return f
 
 def update(table, id_):
     """
@@ -91,7 +129,16 @@ def update(table, id_):
     """
 
     # your code
+    id_ -= 1 # correct index, so if user entered 1, we remove item with first index [0]
 
+    inputs = ui.get_inputs([f"Title (current: {table[id_][item_index]}): ", f"Price (current: {table[id_][price_index]}): ",
+                            f"Month (current: {table[id_][month_index]}): ", f"Day (current: {table[id_][day_index]}): ", 
+                            f"Year (current: {table[id_][year_index]}): "],
+                            "Please insert new game information")
+
+    for i in range(len(table[id_])-1): # iterate through the list 1 time less than its length, to ignore unchangeable id
+        table[id_][item_index + i] = inputs[i]  # skip first table item, which contains entry unchangeable id
+    return table
     return table
 
 
