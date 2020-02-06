@@ -9,12 +9,13 @@ Data table structure:
 
 # everything you'll need is imported:
 # User interface module
-from ui import print_hr_options
+import ui
 # data manager module
 import data_manager
 # common module
 import common
 
+table = common.read_from_file_to_table("hr/persons.csv")
 
 def start_module():
     """
@@ -26,14 +27,11 @@ def start_module():
         None
     """
     # your code
-    file = open("hr/persons.csv", "r")
-    persons = file.readlines()
-
-    print_hr_options()
-    persons = []
-    print(persons)
+    persons = common.read_from_file_to_table("hr/persons.csv")
+    ui.print_hr_options()
     while True:
-        option = input("Please enter a number")
+        inputs = ui.get_inputs(["Please enter a number: "], "")
+        option = inputs[0]
         if option == "1":
             show_table(persons)
         elif option == "2":
@@ -43,6 +41,8 @@ def start_module():
         elif option == "4":
             update()
         elif option == "5":
+            get_oldest_person(table)
+        elif option == "0":
             break
 
 
@@ -56,14 +56,12 @@ def show_table(persons):
     Returns:
         None
     """
+    ui.print_table
 
     # your code
-    file = open("hr/persons.csv", "r")
-    persons_list = []
-    persons_list = file.readlines()
-    for person in persons_list:
-        print(person[9:])
-    input("Press any key")
+    title_list = ["Id", "Name", "Birthday year"]
+    ui.print_table(persons, title_list)
+    ui.continue_to_start()
     start_module()
 
 
@@ -80,11 +78,12 @@ def add():
 
     # your code
     with open('hr/persons.csv', 'a') as file:
-        person_add = input(str("Type name, surname and year"))
-        file.write("\n" + person_add)
+        person_add = input(str("Type name, surname"))
+        person_year = input(str("Birthday year"))
+        file.write("\n" + common.generate_random() + ";" + person_add + ";" + person_year)
         file.close()
-        input("Press any key")
         return file
+        ui.continue_to_start()
         start_module()
 
 
@@ -106,10 +105,10 @@ def remove():
         lines = f.readlines()
     with open("hr/persons.csv", "w") as f:
         for line in lines:
-            if line.strip("\n") != id_:         #Need to implement whole data~~~Fix it later
+            if line.strip("\n") != id_:
                 f.write(line)
     f.close()
-    input("Press any key")
+    ui.continue_to_start()
     start_module()
     return f
 
@@ -130,10 +129,15 @@ def update():
     file = open("hr/persons.csv", "r")
     persons_list = file.readlines()
     person = []
+    find = input("Search")
+    Index = 0
     for i in persons_list:
         list_only_for_split = i.split(",")
         person.append(list_only_for_split)
-        print(person)
+        print(person[Index][0][9:])
+        Index += 1
+        if find in person:
+            print("Help")
     return persons_list
 
 
@@ -152,6 +156,20 @@ def get_oldest_person(table):
     """
 
     # your code
+    #name_index, price_index, month_index, day_index, year_index = 1,2,3,4,5
+    #set starting lowest price as the one of first element
+    lowest_price = int(table[0][year_index])
+
+    oldest_person = 1
+    for i in range(len(table)):
+        if lowest_price > int(table[i][year_index]):
+            lowest_price = int(table[i][year_index])
+            oldest_person = i
+        elif lowest_price == int(table[i][year_index]) and table[i][name_index] < table[oldest_person][name_index]:
+            oldest_person = i
+    print(oldest_person)
+
+    return oldest_person
 
 
 def get_persons_closest_to_average(table):
