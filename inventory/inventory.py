@@ -16,7 +16,7 @@ import ui
 import data_manager
 # common module
 import common
-item_index = 1
+name_index, manufacturer_index, purchase_year_index, durability_index = 1,2,3,4
 
 
 def start_module():
@@ -45,7 +45,6 @@ def start_module():
         elif option == "4":
             id_ = ui.get_inputs(["Please choose index: "],"")[0]
             items_list = update(items_list, int(id_))
-            update()
         elif option == "0":
             break
 
@@ -62,7 +61,7 @@ def show_table(items_list):
     """
 
     # your code
-    title_list = ["Id", "Consol Name", "Distributor", "Year", "Num of copies sold"]
+    title_list = ["Id", "Consol Name", "Distributor", "Year of purchase", "Years it can be used"]
     ui.print_table(items_list, title_list)
     ui.continue_to_start()
     start_module()
@@ -129,15 +128,15 @@ def update(table, id_):
     """
 
     # your code
+    #title_index, price_index, month_index, day_index, year_index = 1,2,3,4,5
+    #name_index, manufacturer_index, purchase_year_index, durability_index = 1,2,3,4
     id_ -= 1 # correct index, so if user entered 1, we remove item with first index [0]
 
-    inputs = ui.get_inputs([f"Title (current: {table[id_][item_index]}): ", f"Price (current: {table[id_][price_index]}): ",
-                            f"Month (current: {table[id_][month_index]}): ", f"Day (current: {table[id_][day_index]}): ", 
-                            f"Year (current: {table[id_][year_index]}): "],
-                            "Please insert new game information")
+    inputs = ui.get_inputs([f"Name (current: {table[id_][name_index]}): ", f"Manufacturer (current: {table[id_][manufacturer_index]}): ",
+                            f"Year (current: {table[id_][purchase_year_index]}): ", f"Durability (current: {table[id_][durability_index]}): "])
 
-    for i in range(len(table[id_])-1): # iterate through the list 1 time less than its length, to ignore unchangeable id
-        table[id_][item_index + i] = inputs[i]  # skip first table item, which contains entry unchangeable id
+    for i in range(len(table[id_])-1):
+        table[id_][name_index + i] = inputs[i]
     return table
     return table
 
