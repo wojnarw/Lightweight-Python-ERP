@@ -67,15 +67,18 @@ def choose(sales_list):
     elif option == "2": # add entry
         add_table = ui.get_inputs(["Title: ","Price: ","Month: ", "Day: ", "Year: "],"Please insert new game information")
         sales_list = add(add_table, sales_list)
+        common.save_table_to_file(sales_list, filepath)
 
     elif option == "3": # remove entry
         id_ = ui.get_inputs(["Please choose index: "],"")[0]
         sales_list = remove(sales_list, int(int(id_) - 1)) # correct index by -1, so if user entered 1, we remove item with first index [0]
+        common.save_table_to_file(sales_list, filepath)
 
     elif option == "4": # update entry
         id_ = ui.get_inputs(["Please choose index: "],"")[0]
         sales_list = update(sales_list, int(id_))
-
+        common.save_table_to_file(sales_list, filepath)
+        
     elif option == "5": # show lowest price item
         lowest_price_id = get_lowest_price_item_id(sales_list)
         ui.print_result(sales_list[lowest_price_id], "Lowest price game")
@@ -122,7 +125,6 @@ def add(table, sales_list):
     """
     table.insert(0, common.generate_random())
     sales_list.append(table)
-    common.save_table_to_file(sales_list, filepath)
     return sales_list
 
 
@@ -163,6 +165,7 @@ def update(table, id_):
 
     for i in range(len(table[id_])-1): # iterate through the list 1 time less than its length, to ignore unchangeable id
         table[id_][title_index + i] = inputs[i]  # skip first table item, which contains entry unchangeable id
+    common.save_table_to_file(sales_list, filepath)
     return table
 
 
@@ -212,8 +215,8 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
     """
     
     # join year, month, day into string
-    date_from = int(year_from + fix_date(month_from) + fix_date(day_from))
-    date_to = int(year_to + fix_date(month_to) + fix_date(day_to))
+    date_from = int(year_from.zfill(4) + month_from.zfill(2) + day_from.zfill(2))
+    date_to = int(year_to.zfill(4) + month_to.zfill(2) + day_to.zfill(2))
     results = []
 
     # if FROM date is newer than TO, we swap them to look from older to newer date
@@ -221,13 +224,8 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
         date_from, date_to = date_to, date_from
 
     for entry in table:
-        entry_date = int(entry[year_index] + fix_date(entry[month_index]) + fix_date(entry[day_index]))
+        entry_date = int(entry[year_index] + entry[month_index].zfill(2) + entry[day_index].zfill(2))
         if date_from <= entry_date <= date_to:
             results.append(entry)
 
     return results
-
-def fix_date(date):
-    if len(date) == 1:
-        date = "0" + date
-    return date
