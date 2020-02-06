@@ -94,15 +94,30 @@ def print_result(result, label):
         None: This function doesn't return anything it only prints to console.
     """
 
-    print(f"\n\t{label}:")
+    if label:
+        print(f"\n\t{label}:")
+
+    if not result:
+        print("\tNO RESULTS")
+        return
+
     text = ""
+
+    # if its a list
     if isinstance(result, list): 
-        text += separator_sign
-        for i in result:
-            text += i + separator_sign
+        text += "\t" + separator_sign
+        for entry in result:
+            # if its a list of lists
+            if isinstance(entry, list): 
+                for i in entry:
+                    text += i + separator_sign
+                text += "\n"
+            else:
+                text += entry + separator_sign
     else:
         text = result
-    print("\t" + text)
+
+    print(text)
 
 
 def print_menu(title, list_options, exit_message):

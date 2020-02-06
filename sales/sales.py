@@ -70,7 +70,7 @@ def choose(sales_list):
 
     elif option == "3": # remove entry
         id_ = ui.get_inputs(["Please choose index: "],"")[0]
-        sales_list = remove(sales_list, int(id_))
+        sales_list = remove(sales_list, int(int(id_) - 1)) # correct index by -1, so if user entered 1, we remove item with first index [0]
 
     elif option == "4": # update entry
         id_ = ui.get_inputs(["Please choose index: "],"")[0]
@@ -81,11 +81,12 @@ def choose(sales_list):
         ui.print_result(sales_list[lowest_price_id], "Lowest price game")
 
     elif option == "6":
-        monthFrom, dayFrom, yearFrom, monthTo, dayTo, yearTo = 0,1,2,3,4,5
-        dates = ui.get_inputs(["Month from: ", "Day from: ", "Year from: ", "Month to: ", "Day to: ", "Year to: "],
+        yearFrom, monthFrom, dayFrom, yearTo, monthTo, dayTo = 0,1,2,3,4,5
+        dates = ui.get_inputs(["Year from: ", "Month from: ", "Day from: ", "Year to: ", "Month to: ", "Day to: "],
                                 "Please type in starting and ending dates")
         ui.print_result(get_items_sold_between(sales_list, dates[monthFrom], dates[dayFrom], dates[yearFrom], 
-                                                           dates[monthTo], dates[dayTo], dates[yearTo]))
+                                                           dates[monthTo], dates[dayTo], dates[yearTo]),
+                                                           "Items sold between dates")
 
     elif option == "0":
         repeat = False
@@ -137,7 +138,7 @@ def remove(table, id_):
         list: Table without specified record.
     """
 
-    table.pop(id_ - 1) # correct index, so if user entered 1, we remove item with first index [0]
+    table.pop(id_)
     return table
 
 
@@ -209,14 +210,24 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
     Returns:
         list: list of lists (the filtered table)
     """
+    
+    # join year, month, day into string
+    date_from = int(year_from + fix_date(month_from) + fix_date(day_from))
+    date_to = int(year_to + fix_date(month_to) + fix_date(day_to))
+    results = []
 
-    for i in range(len(table)):
-        pass
+    # if FROM date is newer than TO, we swap them to look from older to newer date
+    if date_from > date_to:
+        date_from, date_to = date_to, date_from
 
-""" * id (string): Unique and random generated identifier
-        at least 2 special characters (except: ';'), 2 number, 2 lower and 2 upper case letters)
-    * title (string): Title of the game sold
-    * price (number): The actual sale price in USD
-    * month (number): Month of the sale
-    * day (number): Day of the sale
-    * year (number): Year of the sale"""
+    for entry in table:
+        entry_date = int(entry[year_index] + fix_date(entry[month_index]) + fix_date(entry[day_index]))
+        if date_from <= entry_date <= date_to:
+            results.append(entry)
+
+    return results
+
+def fix_date(date):
+    if len(date) == 1:
+        date = "0" + date
+    return date
