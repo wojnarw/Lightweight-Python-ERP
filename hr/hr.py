@@ -14,7 +14,8 @@ import ui
 import data_manager
 # common module
 import common
-
+name_index = 1
+year_index = 2
 table = common.read_from_file_to_table("hr/persons.csv")
 
 def start_module():
@@ -100,7 +101,7 @@ def remove():
     """
 
     # your code
-    id_ = input("Which one you want to remove?")
+    id_ = ui.get_inputs("Which one you want to remove?")
     with open("hr/persons.csv", "r") as f:
         lines = f.readlines()
     with open("hr/persons.csv", "w") as f:
@@ -156,16 +157,14 @@ def get_oldest_person(table):
     """
 
     # your code
-    #name_index, price_index, month_index, day_index, year_index = 1,2,3,4,5
-    #set starting lowest price as the one of first element
-    lowest_price = int(table[0][year_index])
+    oldest_person = int(table[0][year_index])
 
-    oldest_person = 1
+    oldest_person = -1
     for i in range(len(table)):
-        if lowest_price > int(table[i][year_index]):
-            lowest_price = int(table[i][year_index])
+        if oldest_person < int(table[i][year_index]):
+            oldest_person = int(table[i][year_index])
             oldest_person = i
-        elif lowest_price == int(table[i][year_index]) and table[i][name_index] < table[oldest_person][name_index]:
+        elif oldest_person == int(table[i][year_index]) and table[i][name_index] > table[oldest_person][name_index]:
             oldest_person = i
     print(oldest_person)
 
