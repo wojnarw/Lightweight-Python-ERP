@@ -1,5 +1,8 @@
 """ User Interface (UI) module """
 
+separator_sign = "  |  " # it separates columns
+side_sign = "|" # on the sides of table
+sourrounding_sign = "-" # top and bottom of table
 
 def print_table(table_2D, title_list):
     """
@@ -23,9 +26,6 @@ def print_table(table_2D, title_list):
     """
     
     max_length = [] # max length of item for each column
-    separator_sign = "  |  " # it separates columns
-    side_sign = "|" # on the sides of table
-    sourrounding_sign = "-" # top and bottom of table
 
     # BELOW VAR NEEDS TO BE FIXED, GOT RID OFF
     # without this correction table horizontal lines displays unevenly
@@ -94,7 +94,15 @@ def print_result(result, label):
         None: This function doesn't return anything it only prints to console.
     """
 
-    # your code
+    print(f"\n\t{label}:")
+    text = ""
+    if isinstance(result, list): 
+        text += separator_sign
+        for i in result:
+            text += i + separator_sign
+    else:
+        text = result
+    print("\t" + text)
 
 
 def print_menu(title, list_options, exit_message):
