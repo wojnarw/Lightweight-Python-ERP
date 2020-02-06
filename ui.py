@@ -158,7 +158,8 @@ def get_inputs(list_labels, title):
 
     print(f"\t{title}")
     for label in list_labels:
-        user_input = input(f"\t{label}")
+        user_input = input(f"\t{label}").strip()
+        user_input = user_input.replace(";","")
         inputs.append(user_input)
     return inputs
 
@@ -174,7 +175,7 @@ def print_error_message(message):
         None: This function doesn't return anything it only prints to console.
     """
 
-    # your code
+    print("\n\t" + message)
 
 
 def print_hr_options():

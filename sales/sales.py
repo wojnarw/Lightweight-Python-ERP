@@ -20,6 +20,8 @@ import common
 
 sales_list = []
 repeat = True
+title_index, price_index, month_index, day_index, year_index = 1,2,3,4,5
+filepath = "sales/sales.csv"
 
 def start_module():
     global repeat
@@ -33,8 +35,8 @@ def start_module():
         None
     """
     #read from file to 2D table
-    sales_list = common.read_from_file_to_table("sales/sales.csv")
-
+    sales_list = common.read_from_file_to_table(filepath)
+    repeat = True
     
     while repeat:
         #display Sales menu
@@ -61,21 +63,33 @@ def choose(sales_list):
     option = inputs[0]
     if option == "1": # show list
         show_table(sales_list)
+
     elif option == "2": # add entry
-        table = ui.get_inputs(["Title: ","Price: ","Month: ", "Day: ", "Year: "],"Please insert new game information")
-        sales_list = add(table, sales_list)
+        add_table = ui.get_inputs(["Title: ","Price: ","Month: ", "Day: ", "Year: "],"Please insert new game information")
+        sales_list = add(add_table, sales_list)
+
     elif option == "3": # remove entry
         id_ = ui.get_inputs(["Please choose index: "],"")[0]
         sales_list = remove(sales_list, int(id_))
+
     elif option == "4": # update entry
         id_ = ui.get_inputs(["Please choose index: "],"")[0]
         sales_list = update(sales_list, int(id_))
+
     elif option == "5": # show lowest price item
-        get_lowest_price_item_id(sales_list)
+        lowest_price_id = get_lowest_price_item_id(sales_list)
+        ui.print_result(sales_list[lowest_price_id], "Lowest price game")
+
     elif option == "6":
-        get_items_sold_between(sales_list, month_from, day_from, year_from, month_to, day_to, year_to)
+        monthFrom, dayFrom, yearFrom, monthTo, dayTo, yearTo = 0,1,2,3,4,5
+        dates = ui.get_inputs(["Month from: ", "Day from: ", "Year from: ", "Month to: ", "Day to: ", "Year to: "],
+                                "Please type in starting and ending dates")
+        ui.print_result(get_items_sold_between(sales_list, dates[monthFrom], dates[dayFrom], dates[yearFrom], 
+                                                           dates[monthTo], dates[dayTo], dates[yearTo]))
+
     elif option == "0":
         repeat = False
+
     else:
         raise KeyError("There is no such option.")
 
@@ -107,6 +121,7 @@ def add(table, sales_list):
     """
     table.insert(0, common.generate_random())
     sales_list.append(table)
+    common.save_table_to_file(sales_list, filepath)
     return sales_list
 
 
@@ -137,17 +152,16 @@ def update(table, id_):
     Returns:
         list: table with updated record
     """
-
+    
     id_ -= 1 # correct index, so if user entered 1, we remove item with first index [0]
-    title_id, price_id, month_id, day_id, year_id = 1,2,3,4,5
 
-    inputs = ui.get_inputs([f"Title (current: {table[id_][title_id]}): ", f"Price (current: {table[id_][price_id]}): ",
-                            f"Month (current: {table[id_][month_id]}): ", f"Day (current: {table[id_][day_id]}): ", 
-                            f"Year (current: {table[id_][year_id]}): "],
+    inputs = ui.get_inputs([f"Title (current: {table[id_][title_index]}): ", f"Price (current: {table[id_][price_index]}): ",
+                            f"Month (current: {table[id_][month_index]}): ", f"Day (current: {table[id_][day_index]}): ", 
+                            f"Year (current: {table[id_][year_index]}): "],
                             "Please insert new game information")
 
     for i in range(len(table[id_])-1): # iterate through the list 1 time less than its length, to ignore unchangeable id
-        table[id_][i+1] = inputs[i]  # skip first table item, which contains entry unchangeable id
+        table[id_][title_index + i] = inputs[i]  # skip first table item, which contains entry unchangeable id
     return table
 
 
@@ -165,8 +179,18 @@ def get_lowest_price_item_id(table):
     Returns:
          string: id
     """
+    #set starting lowest price as the one of first element
+    lowest_price = int(table[0][price_index])
 
-    # your code
+    lowest_price_id = -1
+    for i in range(len(table)):
+        if lowest_price > int(table[i][price_index]):
+            lowest_price = int(table[i][price_index])
+            lowest_price_id = i
+        elif lowest_price == int(table[i][price_index]) and table[i][title_index] < table[lowest_price_id][title_index]:
+            lowest_price_id = i
+
+    return lowest_price_id
 
 
 def get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to):
@@ -186,4 +210,13 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
         list: list of lists (the filtered table)
     """
 
-    # your code
+    for i in range(len(table)):
+        pass
+
+""" * id (string): Unique and random generated identifier
+        at least 2 special characters (except: ';'), 2 number, 2 lower and 2 upper case letters)
+    * title (string): Title of the game sold
+    * price (number): The actual sale price in USD
+    * month (number): Month of the sale
+    * day (number): Day of the sale
+    * year (number): Year of the sale"""
