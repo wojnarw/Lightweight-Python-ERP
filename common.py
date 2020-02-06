@@ -48,6 +48,20 @@ def read_from_file_to_table(path_and_filename):
                 table.append(new_item)
 
     except FileNotFoundError:
-        input(f"\n\tFile '{path_and_filename}' not found!")
+        #print_error_message(f"File '{path_and_filename}' not found!")
+        pass
 
     return table
+
+def save_table_to_file(table, path_and_filename):
+
+    try:
+        with open(path_and_filename, 'w') as file:
+            for entry in table:
+                file.write(";".join(entry) + "\n")
+
+        #ui.print_error_message("Saved to file succesfully!")
+
+    except PermissionError:
+        #ui.print_error_message("You have no permission to save this file!")
+        pass
