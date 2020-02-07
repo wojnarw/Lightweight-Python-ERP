@@ -14,9 +14,13 @@ import ui
 import data_manager
 # common module
 import common
+import main
 name_index = 1
 year_index = 2
 table = common.read_from_file_to_table("hr/persons.csv")
+
+repeat = True
+
 
 def start_module():
     """
@@ -29,22 +33,41 @@ def start_module():
     """
     # your code
     persons = common.read_from_file_to_table("hr/persons.csv")
-    ui.print_hr_options()
-    while True:
-        inputs = ui.get_inputs(["Please enter a number: "], "")
-        option = inputs[0]
-        if option == "1":
-            show_table(persons)
-        elif option == "2":
-            add()
-        elif option == "3":
-            remove()
-        elif option == "4":
-            update()
-        elif option == "5":
-            get_oldest_person(table)
-        elif option == "0":
-            break
+    # repeat = True
+    while repeat:
+        # display Sales menu
+        options = ["Display list",
+                   "Add table",
+                   "Remove table",
+                   "Update table",
+                   "Get the oldest person",
+                   "Get average "]
+
+        ui.print_menu("Hr menu", options, "Return to main menu")
+        try:
+            choose(persons)
+        except KeyError as err:
+            ui.print_error_message(str(err))
+
+
+def choose(persons):
+    global repeat
+    inputs = ui.get_inputs(["Please enter a number: "], "")
+    option = inputs[0]
+    if option == "1":
+        show_table(persons)
+    elif option == "2":
+        add()
+    elif option == "3":
+        remove()
+    elif option == "4":
+        update()
+    elif option == "5":
+        get_oldest_person(table)
+    elif option == "0":
+        main.main()
+    else:
+        raise KeyError("There is no such option.")
 
 
 def show_table(persons):
@@ -81,7 +104,8 @@ def add():
     with open('hr/persons.csv', 'a') as file:
         person_add = input(str("Type name, surname"))
         person_year = input(str("Birthday year"))
-        file.write("\n" + common.generate_random() + ";" + person_add + ";" + person_year)
+        file.write("\n" + common.generate_random() +
+                   ";" + person_add + ";" + person_year)
         file.close()
         return file
         ui.continue_to_start()
@@ -164,7 +188,8 @@ def get_oldest_person(table):
         if oldest_person < int(table[i][year_index]):
             oldest_person = int(table[i][year_index])
             oldest_person = i
-        elif oldest_person == int(table[i][year_index]) and table[i][name_index] > table[oldest_person][name_index]:
+        elif oldest_person == int(table[i][year_index])
+        and table[i][name_index] > table[oldest_person][name_index]:
             oldest_person = i
     print(oldest_person)
 
