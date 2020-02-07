@@ -20,8 +20,9 @@ import common
 
 sales_list = []
 repeat = True
-title_index, price_index, month_index, day_index, year_index = 1,2,3,4,5
+unique_id, title_index, price_index, month_index, day_index, year_index = 0,1,2,3,4,5
 filepath = "sales/sales.csv"
+title_list = ["ID", "TITLE", "PRICE", "MONTH", "DAY", "YEAR"]
 
 def start_module():
     global repeat
@@ -78,18 +79,18 @@ def choose(sales_list):
         id_ = ui.get_inputs(["Please choose index: "],"")[0]
         sales_list = update(sales_list, int(id_))
         common.save_table_to_file(sales_list, filepath)
-        
-    elif option == "5": # show lowest price item
-        lowest_price_id = get_lowest_price_item_id(sales_list)
-        ui.print_result(sales_list[lowest_price_id], "Lowest price game")
 
-    elif option == "6":
-        yearFrom, monthFrom, dayFrom, yearTo, monthTo, dayTo = 0,1,2,3,4,5
+    elif option == "5": # show lowest price item
+        get_lowest_price_item_id(sales_list)
+
+    elif option == "6": # show games from given time range
+        yearFrom, monthFrom, dayFrom, yearTo, monthTo, dayTo = 0,1,2,3,4,5 # indexes
         dates = ui.get_inputs(["Year from: ", "Month from: ", "Day from: ", "Year to: ", "Month to: ", "Day to: "],
                                 "Please type in starting and ending dates")
+        ui.print_result("Items sold between dates")
         ui.print_result(get_items_sold_between(sales_list, dates[monthFrom], dates[dayFrom], dates[yearFrom], 
                                                            dates[monthTo], dates[dayTo], dates[yearTo]),
-                                                           "Items sold between dates")
+                                                           ["ID", "TITLE", "PRICE", "MONTH", "DAY", "YEAR"])
 
     elif option == "0":
         repeat = False
@@ -109,8 +110,18 @@ def show_table(sales_list):
         None
     """
 
-    title_list = ["ID", "TITLE", "PRICE", "MONTH", "DAY", "YEAR"]
     ui.print_table(sales_list, title_list)
+
+    # ui.print_result(string_result, string_label)
+    #
+
+    ui.print_result("one", "Result title")
+    ui.print_result([["uno", "due","tre","quarte"]], "Table title")
+    ui.print_result([["uno", "due","tre","quarte"]], ["title one", "title two", "title three", "title four"])
+    ui.print_result("Dictionary test")
+    ui.print_result({"uno": "due",
+                    "tre":"quarte"}, ["title one", "title two"])
+    
 
 
 def add(table, sales_list):
@@ -185,8 +196,8 @@ def get_lowest_price_item_id(table):
     """
     #set starting lowest price as the one of first element
     lowest_price = int(table[0][price_index])
+    lowest_price_id = 0
 
-    lowest_price_id = -1
     for i in range(len(table)):
         if lowest_price > int(table[i][price_index]):
             lowest_price = int(table[i][price_index])
@@ -194,7 +205,9 @@ def get_lowest_price_item_id(table):
         elif lowest_price == int(table[i][price_index]) and table[i][title_index] < table[lowest_price_id][title_index]:
             lowest_price_id = i
 
-    return lowest_price_id
+    ui.print_result([table[lowest_price_id]], "Lowest price game")
+
+    return table[lowest_price_id][unique_id]
 
 
 def get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to):
@@ -215,8 +228,8 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
     """
     
     # join year, month, day into string
-    date_from = int(year_from.zfill(4) + month_from.zfill(2) + day_from.zfill(2))
-    date_to = int(year_to.zfill(4) + month_to.zfill(2) + day_to.zfill(2))
+    date_from = int(str(year_from).zfill(4) + str(month_from).zfill(2) + str(day_from).zfill(2))
+    date_to = int(str(year_to).zfill(4) + str(month_to).zfill(2) + str(day_to).zfill(2))
     results = []
 
     # if FROM date is newer than TO, we swap them to look from older to newer date
@@ -225,7 +238,13 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
 
     for entry in table:
         entry_date = int(entry[year_index] + entry[month_index].zfill(2) + entry[day_index].zfill(2))
-        if date_from <= entry_date <= date_to:
+        if date_from < entry_date < date_to:
+            # change variable types, so they match tests
+            entry[year_index] = int(entry[year_index])
+            entry[month_index] = int(entry[month_index])
+            entry[day_index] = int(entry[day_index])
+            entry[price_index] = int(entry[price_index])
+
             results.append(entry)
 
     return results

@@ -36,6 +36,8 @@ def print_table(table_2D, title_list):
         column = 0
 
         for item in row:
+            item = str(item)
+
             try:
                 if len(item) > max_length[column]:
                     max_length[column] = len(item)
@@ -56,7 +58,7 @@ def print_table(table_2D, title_list):
         if len(title_list[i]) > max_length[i]:
             max_length[i] = len(title_list[i])
 
-        titles += title_list[i] + fill(title_list[i], max_length[i]) + separator_sign
+        titles += title_list[i] + fill(str(title_list[i]), max_length[i]) + separator_sign
 
     print("\n\t/" + fill("", len(titles.strip())-length_correction, sourrounding_sign) + "\\") # print top line
     print("\t" + titles)
@@ -67,7 +69,7 @@ def print_table(table_2D, title_list):
     for row in range(len(table_2D)):
         table_content += "\t" + side_sign + " " + str(row+1) + fill(str(row+1), max(len(str(row+1)), len(title_index))) + separator_sign
         for item in range(len(table_2D[row])):
-            table_content += table_2D[row][item] + fill(table_2D[row][item], max_length[item]) + separator_sign
+            table_content += str(table_2D[row][item]) + fill(str(table_2D[row][item]), max_length[item]) + separator_sign
         table_content += "\n"
 
     print(table_content, end="")
@@ -75,14 +77,14 @@ def print_table(table_2D, title_list):
 
 
 # check how many spaces we need to make columns straight
-def fill (check_for_length, total_length, filler=" "):
+def fill(check_for_length, total_length, filler=" "):
     space = ""
     for i in range(len(check_for_length), total_length):
         space += filler
     return space
 
 
-def print_result(result, label):
+def print_result(result, label = ""):
     """
     Displays results of the special functions.
 
@@ -94,30 +96,48 @@ def print_result(result, label):
         None: This function doesn't return anything it only prints to console.
     """
 
-    if label:
-        print(f"\n\t{label}:")
+    if isinstance(label, str) and label:
+        print(f"\n\n\t{label}:")
 
     if not result:
         print("\tNO RESULTS")
         return
 
+    #if result is string
+    if isinstance(result, str):
+        print("\n\t" + result)
+        return
+
+    #if result is integer
+    if isinstance(result, int):
+        print("\n\t" + result)
+        return
+
     text = ""
+    max_length = [] # max length of item for each column
+    titles = []
 
-    # if its a list
+    # if its a list of lists
     if isinstance(result, list): 
-        text += "\t" + separator_sign
-        for entry in result:
-            # if its a list of lists
-            if isinstance(entry, list): 
-                for i in entry:
-                    text += i + separator_sign
-                text += "\n"
-            else:
-                text += entry + separator_sign
-    else:
-        text = result
+        # if label we received doesnt give as titles for columns
+        if not isinstance(label, list):
+            for i in range(len(result[0])):
+                titles.append("")
+        elif len(label) >= len(result[0]):
+            for i in range(len(result[0])):
+                titles.append(label[i])
+        elif len(label) < len(result[0]):
+            print_error_message("\n\n\tERROR: NUMBER OF TITLES MUST MATCH NUMBER OF COLUMNS")
+            return
+    
+    if isinstance(result, dict):
+        alist = []
+        for key in result:
+            alist.append([key,result.get(key)])
+        print_table(alist, label)
+        return
 
-    print(text)
+    print_table(result, titles)
 
 
 def print_menu(title, list_options, exit_message):
@@ -148,8 +168,6 @@ def print_menu(title, list_options, exit_message):
     print(f"\t0. {exit_message}")
 
     
-
-
 def get_inputs(list_labels, title):
     """
     Gets list of inputs from the user.
