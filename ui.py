@@ -215,4 +215,4 @@ def print_hr_options():
 
 
 def continue_to_start():
-    input("press enter")
+    input("\tPress enter")
