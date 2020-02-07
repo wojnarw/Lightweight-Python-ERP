@@ -188,8 +188,7 @@ def get_oldest_person(table):
         if oldest_person < int(table[i][year_index]):
             oldest_person = int(table[i][year_index])
             oldest_person = i
-        elif oldest_person == int(table[i][year_index])
-        and table[i][name_index] > table[oldest_person][name_index]:
+        elif oldest_person == int(table[i][year_index]) and table[i][name_index] > table[oldest_person][name_index]:
             oldest_person = i
     print(oldest_person)
 
