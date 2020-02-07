@@ -107,9 +107,8 @@ def print_result(result, label = ""):
     if isinstance(result, str):
         print("\n\t" + result)
         return
-
     #if result is integer
-    if isinstance(result, int):
+    elif isinstance(result, int):
         print("\n\t" + result)
         return
 
