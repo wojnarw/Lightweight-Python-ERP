@@ -24,6 +24,7 @@ filepath = "store/games.csv"
 
 
 def store_choose(store_list):
+    global repeat
     inputs = ui.get_inputs(["Please enter a number: "], "")
     store_option = inputs[0]
     if store_option == "1":
@@ -47,6 +48,8 @@ def store_choose(store_list):
         id_ = ui.get_inputs(["Which manufacter average amount of games do you want to show?: "], "")
         store_amount_of_games = get_average_by_manufacturer(id_)
         ui.print_result = store_amount_of_games
+    elif store_option == "0":
+        repeat = False
     else:
         raise KeyError("There is no such option.")
 
@@ -219,7 +222,7 @@ def get_average_by_manufacturer(table, manufacturer):
     
     for a in count_games:
         count_games[a] = count_studios[a] / count_games[a]
-        
+
 
     return count_games
     # your code
