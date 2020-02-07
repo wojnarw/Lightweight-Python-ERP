@@ -113,15 +113,16 @@ def show_table(sales_list):
     ui.print_table(sales_list, title_list)
 
     # ui.print_result(string_result, string_label)
-    #
-
-    ui.print_result("one", "Result title")
-    ui.print_result([["uno", "due","tre","quarte"]], "Table title")
-    ui.print_result([["uno", "due","tre","quarte"]], ["title one", "title two", "title three", "title four"])
+    
+"""
+    ui.print_result("string or int", "Result title")
+    ui.print_result([["uno", "due","tre","quattro"]], "Table title")
+    ui.print_result([["uno", "due","tre","quattro"], ["one", "two", "three","four"]], 
+                    ["title one", "title two", "title three", "title four"])
     ui.print_result("Dictionary test")
     ui.print_result({"uno": "due",
-                    "tre":"quarte"}, ["title one", "title two"])
-    
+                    "tre":"quattro"}, ["title one", "title two"])
+"""
 
 
 def add(table, sales_list):
@@ -227,7 +228,7 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
         list: list of lists (the filtered table)
     """
     
-    # join year, month, day into string
+    # join year, month, day into a string
     date_from = int(str(year_from).zfill(4) + str(month_from).zfill(2) + str(day_from).zfill(2))
     date_to = int(str(year_to).zfill(4) + str(month_to).zfill(2) + str(day_to).zfill(2))
     results = []
@@ -238,7 +239,9 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
 
     for entry in table:
         entry_date = int(entry[year_index] + entry[month_index].zfill(2) + entry[day_index].zfill(2))
+        
         if date_from < entry_date < date_to:
+
             # change variable types, so they match tests
             entry[year_index] = int(entry[year_index])
             entry[month_index] = int(entry[month_index])
