@@ -115,9 +115,12 @@ def show_table(sales_list):
     # ui.print_result(string_result, string_label)
     #
 
-    ui.print_result("one", "Test result")
-    ui.print_result([["uno", "due","tre","quarte"]], "Test result")
+    ui.print_result("one", "Result title")
+    ui.print_result([["uno", "due","tre","quarte"]], "Table title")
     ui.print_result([["uno", "due","tre","quarte"]], ["title one", "title two", "title three", "title four"])
+    ui.print_result("Dictionary test")
+    ui.print_result({"uno": "due",
+                    "tre":"quarte"}, ["title one", "title two"])
     
 
 

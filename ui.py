@@ -105,20 +105,20 @@ def print_result(result, label = ""):
 
     #if result is string
     if isinstance(result, str):
-        print("\t" + result)
+        print("\n\t" + result)
         return
 
     #if result is integer
     if isinstance(result, int):
-        print("\t" + result)
+        print("\n\t" + result)
         return
 
     text = ""
     max_length = [] # max length of item for each column
+    titles = []
 
     # if its a list of lists
     if isinstance(result, list): 
-        titles = []
         # if label we received doesnt give as titles for columns
         if not isinstance(label, list):
             for i in range(len(result[0])):
@@ -130,8 +130,12 @@ def print_result(result, label = ""):
             print_error_message("\n\n\tERROR: NUMBER OF TITLES MUST MATCH NUMBER OF COLUMNS")
             return
     
-    if isinstance(result, dict): 
-        pass
+    if isinstance(result, dict):
+        alist = []
+        for key in result:
+            alist.append([key,result.get(key)])
+        print_table(alist, label)
+        return
 
     print_table(result, titles)
 
