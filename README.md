@@ -1,6 +1,6 @@
 # Lightweight Python ERP
 Python Enterprise Resource Planning (ERP) application  
-4-person Python 3 project
+4-person Python 3 project (other contributors made app structure with tasks)
 
 Features:
 - resources management, adding, updating, removing stock
